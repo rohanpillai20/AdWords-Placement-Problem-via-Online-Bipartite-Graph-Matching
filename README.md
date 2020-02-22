@@ -43,6 +43,6 @@ Using Python with random.seed(0) for shuffling queries, the following was obtain
 
 |command|revenue|competitive ratio|
 |----------|-------|---------------|
-|python adwords.py greedy|16731.40|0.94|
-|python adwords.py mssv|17671.00|0.99|
-|python adwords.py balance|12320.20|0.69|
+|python adwords.py greedy|16800.5|0.9412|
+|python adwords.py mssv|17714.7|0.9924|
+|python adwords.py balance|12386.5|0.6939|
