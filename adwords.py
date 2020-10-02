@@ -6,6 +6,23 @@ import copy
 
 np.random.seed(0)
 
+class Solution:
+# @return a boolean
+    def isMatch(self, s, p):
+        length = len(s)
+        if len(p) - p.count('*') > length:
+            return False
+        dp = [True] + [False]*length
+        for i in p:
+            if i != '*':
+                for n in reversed(range(length)):
+                    dp[n+1] = dp[n] and (i == s[n] or i == '?')
+            else:
+                for n in range(1, length+1):
+                    dp[n] = dp[n-1] or dp[n]
+            dp[0] = dp[0] and i == '*'
+        return dp[-1]
+
 def greedy(bidders_dict, queries_dict, queries):
     revenue = 0
     for _,q in queries.itertuples():
@@ -34,28 +51,11 @@ def msvv(bidders_dict, queries_dict, queries, original_bidders_dict):
         
     return revenue
 
-def balance(bidders_dict, queries_dict, queries):
-    revenue = 0
-    for _,q in queries.itertuples():
-        b = queries_dict[q]
-        temp_bidders_dict = {}
-        for temp in b.itertuples():
-            temp_bidders_dict[temp[1]] = bidders_dict[temp[1]]
-        max_bidder = max(temp_bidders_dict, key=temp_bidders_dict.get)
-        bid = b[b['Advertiser']==max_bidder]['Bid Value'].iloc[0]
-        if(bidders_dict[max_bidder]>bid):
-            bidders_dict[max_bidder]-=bid
-            revenue += bid
-                
-    return revenue
-
 def choose_algorithm(algorithm, *args):
     if algorithm=='greedy':
         return greedy(bidders_dict, queries_dict, queries)
     elif algorithm=='msvv':
         return msvv(bidders_dict, queries_dict, queries, original_bidders_dict)
-    elif algorithm=='balance':
-        return balance(bidders_dict, queries_dict, queries)
     else:        
         return 0
 
